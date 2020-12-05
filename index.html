@@ -5,14 +5,14 @@
 </head>
 <body>
     <h1 align="center"><u>CRUD API</u></h1>
+    <div class="center">
+        <button style="margin-left: 343px;margin-bottom:5px;" onclick="window.location.href='add.html';" align="center">Add</button>
     <table align="center" border='1'>
         <thead>
             <tr>
                 <th>Id</th>
-                <th>email</th>
                 <th>first_name</th>
                 <th>last_name</th>
-                <th>avatar</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -26,30 +26,33 @@
      <script>
          var revealingModulePattern = (
              function () {
-                function getApiValue() {
-                    $.getJSON("https://reqres.in/api/users", function(result){
-                        var data = result.data;
-                        $.each(data, function(i, field){
-                            $("table tbody").append("<tr><td>" + field.id + '</td><td>' + field.email + '</td><td>' + field.first_name + '</td><td>' + field.last_name + '</td><td>' + "<img width='100px' src='" + field.avatar + "' />" + '</td><td>' + "<button id='edit' value=" + field.id + ">Edit</button></td><td>" + "<button id='delete' value=" + field.id + ">Delete</button></td></tr>");
-                        });
+                function fetchApiValue() {
+                    $.ajax({
+                        url:"fetch.php",
+                        success:function(data)
+                        {
+                            $('tbody').html(data);
+                        }
                     });
                 }
                  return {
-                    getApiValue: getApiValue,
+                    fetchApiValue: fetchApiValue,
                  };
              }
          )();
      $(document).ready(function(){
-        revealingModulePattern.getApiValue();
+        revealingModulePattern.fetchApiValue();
+
         $('body').on('click', '#edit', function() {
             var editVal = $(this).attr('value');
             window.location.href = 'edit.html?id=' + editVal;
         });
+        
         $('body').on('click', '#delete', function() {
             var deleteVal = $(this).attr('value');
             window.location.href = 'delete.html?id=' + deleteVal;
         });
-     });
+    });
      </script>
 </body>
 </html>
